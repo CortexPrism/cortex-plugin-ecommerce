@@ -1,0 +1,271 @@
+{
+  "name": "cortex-plugin-ecommerce",
+  "version": "1.0.0",
+  "description": "E-Commerce Operations Manager — Shopify, WooCommerce, BigCommerce, and Magento integration for product management, inventory sync, order fulfillment, and sales analytics",
+  "kind": "esm",
+  "entryPoint": "mod.ts",
+  "runtime": "deno",
+  "author": "CortexPrism",
+  "license": "MIT",
+  "repository": "https://github.com/CortexPrism/cortex-plugin-ecommerce",
+  "homepage": "https://cortexprism.io/marketplace/plugins/ecommerce",
+  "capabilities": ["tools", "network:fetch"],
+  "tools": [
+    {
+      "name": "ecom_list_products",
+      "description": "List products with inventory status, pricing, and variants across connected storefronts",
+      "params": [
+        {
+          "name": "platform",
+          "type": "string",
+          "description": "E-commerce platform",
+          "required": true,
+          "enum": ["shopify", "woocommerce", "bigcommerce", "magento"]
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "description": "Filter by product status",
+          "required": false,
+          "enum": ["active", "draft", "archived", "all"]
+        },
+        {
+          "name": "search",
+          "type": "string",
+          "description": "Search product title or SKU",
+          "required": false
+        },
+        {
+          "name": "low_stock",
+          "type": "boolean",
+          "description": "Only show low-stock products",
+          "required": false
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "description": "Max results (default: 25)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "ecom_create_product",
+      "description": "Create a new product listing with title, description, pricing, images, and variants",
+      "params": [
+        {
+          "name": "platform",
+          "type": "string",
+          "description": "E-commerce platform",
+          "required": true,
+          "enum": ["shopify", "woocommerce", "bigcommerce", "magento"]
+        },
+        { "name": "title", "type": "string", "description": "Product title", "required": true },
+        {
+          "name": "description",
+          "type": "string",
+          "description": "Product description (HTML supported)",
+          "required": true
+        },
+        { "name": "price", "type": "number", "description": "Base price", "required": true },
+        { "name": "sku", "type": "string", "description": "Stock keeping unit", "required": false },
+        {
+          "name": "quantity",
+          "type": "number",
+          "description": "Initial stock quantity",
+          "required": false
+        },
+        {
+          "name": "tags",
+          "type": "string",
+          "description": "Comma-separated tags",
+          "required": false
+        },
+        {
+          "name": "vendor",
+          "type": "string",
+          "description": "Vendor/manufacturer",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "ecom_update_inventory",
+      "description": "Update inventory levels for products across storefronts with sync verification",
+      "params": [
+        {
+          "name": "platform",
+          "type": "string",
+          "description": "E-commerce platform",
+          "required": true,
+          "enum": ["shopify", "woocommerce", "bigcommerce", "magento"]
+        },
+        {
+          "name": "product_id",
+          "type": "string",
+          "description": "Product ID or SKU",
+          "required": true
+        },
+        {
+          "name": "quantity",
+          "type": "number",
+          "description": "New stock quantity",
+          "required": true
+        },
+        {
+          "name": "location",
+          "type": "string",
+          "description": "Warehouse/location name",
+          "required": false
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "description": "Reason for adjustment",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "ecom_list_orders",
+      "description": "List orders with filters for status, date range, customer, and fulfillment state",
+      "params": [
+        {
+          "name": "platform",
+          "type": "string",
+          "description": "E-commerce platform",
+          "required": true,
+          "enum": ["shopify", "woocommerce", "bigcommerce", "magento"]
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "description": "Order status",
+          "required": false,
+          "enum": ["pending", "confirmed", "processing", "shipped", "delivered", "cancelled", "all"]
+        },
+        {
+          "name": "start_date",
+          "type": "string",
+          "description": "Start date (YYYY-MM-DD)",
+          "required": false
+        },
+        {
+          "name": "end_date",
+          "type": "string",
+          "description": "End date (YYYY-MM-DD)",
+          "required": false
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "description": "Max results (default: 25)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "ecom_fulfill_order",
+      "description": "Mark an order as fulfilled, update tracking info, and notify customer",
+      "params": [
+        {
+          "name": "platform",
+          "type": "string",
+          "description": "E-commerce platform",
+          "required": true,
+          "enum": ["shopify", "woocommerce", "bigcommerce", "magento"]
+        },
+        { "name": "order_id", "type": "string", "description": "Order ID", "required": true },
+        {
+          "name": "tracking_number",
+          "type": "string",
+          "description": "Shipping tracking number",
+          "required": false
+        },
+        {
+          "name": "carrier",
+          "type": "string",
+          "description": "Shipping carrier (e.g. UPS, FedEx, USPS)",
+          "required": false
+        },
+        {
+          "name": "notify_customer",
+          "type": "boolean",
+          "description": "Send shipment notification to customer",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "ecom_get_sales_summary",
+      "description": "Get sales analytics: revenue trends, top products, conversion rates, and customer metrics",
+      "params": [
+        {
+          "name": "platform",
+          "type": "string",
+          "description": "E-commerce platform",
+          "required": true,
+          "enum": ["shopify", "woocommerce", "bigcommerce", "magento"]
+        },
+        {
+          "name": "period",
+          "type": "string",
+          "description": "Period: 'today', 'this_week', 'this_month', 'this_quarter', 'this_year', or custom",
+          "required": false
+        },
+        {
+          "name": "start_date",
+          "type": "string",
+          "description": "Custom start date (YYYY-MM-DD)",
+          "required": false
+        },
+        {
+          "name": "end_date",
+          "type": "string",
+          "description": "Custom end date (YYYY-MM-DD)",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "dependencies": {},
+  "peerDependencies": { "cortex": ">=1.0.0" },
+  "ui": {
+    "settings": [
+      {
+        "section": "Shopify",
+        "fields": [
+          {
+            "key": "shopifyStoreDomain",
+            "label": "Store Domain (myshopify.com)",
+            "type": "text",
+            "defaultValue": ""
+          },
+          {
+            "key": "shopifyAccessToken",
+            "label": "Admin API Access Token",
+            "type": "secret",
+            "defaultValue": ""
+          }
+        ]
+      },
+      {
+        "section": "WooCommerce",
+        "fields": [
+          { "key": "wooStoreUrl", "label": "Store URL", "type": "text", "defaultValue": "" },
+          { "key": "wooConsumerKey", "label": "Consumer Key", "type": "text", "defaultValue": "" },
+          {
+            "key": "wooConsumerSecret",
+            "label": "Consumer Secret",
+            "type": "secret",
+            "defaultValue": ""
+          }
+        ]
+      }
+    ]
+  },
+  "aiDisclosure": {
+    "tools": ["Kilo (DeepSeek) — scaffold and implementation"],
+    "humanReview": true
+  }
+}

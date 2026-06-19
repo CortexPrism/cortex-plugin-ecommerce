@@ -1,0 +1,28 @@
+{
+  "tasks": {
+    "dev": "deno run --watch --allow-all mod.ts",
+    "test": "deno test --allow-all test/**/*.test.ts",
+    "test:coverage": "deno test --coverage=.coverage --allow-all test/**/*.test.ts",
+    "fmt": "deno fmt",
+    "fmt:check": "deno fmt --check",
+    "lint": "deno lint",
+    "validate": "deno check mod.ts && deno fmt --check && deno lint"
+  },
+  "imports": {
+    "cortex/plugins": "https://deno.land/x/cortex@latest/plugins/mod.ts",
+    "@std/": "https://deno.land/std@0.208.0/"
+  },
+  "fmt": {
+    "semiColons": true,
+    "singleQuote": true,
+    "useTabs": false,
+    "lineWidth": 100,
+    "indentWidth": 2
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"],
+      "exclude": ["node_modules", "dist", "build", ".git"]
+    }
+  }
+}
