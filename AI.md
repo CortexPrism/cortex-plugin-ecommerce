@@ -18,11 +18,13 @@ AI assistance was used in the following areas:
 
 ## Review
 
-All AI-generated code was reviewed by a human developer, tested thoroughly, and verified to work correctly before being committed to this repository.
+All AI-generated code was reviewed by a human developer, tested thoroughly, and verified to work
+correctly before being committed to this repository.
 
 ## Certification
 
-I certify that I understand the code being submitted and take full responsibility for its behavior and security.
+I certify that I understand the code being submitted and take full responsibility for its behavior
+and security.
 
 ---
 

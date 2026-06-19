@@ -2,35 +2,42 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project
+adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
 ### Added
+
 - Initial project setup
 
 ## [1.0.0] — 2026-06-15
 
 ### Added
+
 - Initial release of cortex-plugin-ecommerce
 - `hello` capability — Greet a person
 - `add` capability — Add two numbers
 - `fetchData` capability — Fetch data from external APIs
 
 ### Changed
+
 - N/A
 
 ### Fixed
+
 - N/A
 
 ### Deprecated
+
 - N/A
 
 ### Removed
+
 - N/A
 
 ### Security
+
 - N/A
 
 ---
@@ -54,15 +61,19 @@ When you release a new version:
 4. Commit and tag: `git tag v1.1.0`
 
 Example:
+
 ```markdown
 ## [1.1.0] — 2026-06-20
 
 ### Added
+
 - New `multiply` capability
 
 ### Fixed
+
 - Timeout handling in `fetchData`
 
 ### Security
+
 - Added input validation to prevent injection attacks
 ```
