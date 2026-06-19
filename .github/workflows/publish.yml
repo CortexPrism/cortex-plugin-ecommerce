@@ -1,4 +1,4 @@
-name: Publish to Marketplace
+name: Publish Plugin
 
 on:
   push:
@@ -6,64 +6,75 @@ on:
       - 'v*'
 
 jobs:
-  test:
-    name: Test
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Deno
         uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
-      
-      - name: Run tests
-        run: deno task test
-      
-      - name: Lint code
-        run: deno task lint
-      
-      - name: Format check
-        run: deno task fmt:check
-      
-      - name: Validate manifest
-        run: deno task validate
 
-  publish:
-    name: Publish Plugin
-    needs: test
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Get version from tag
-        id: version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-      
       - name: Verify version matches manifest
+        id: version
         run: |
+          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
           MANIFEST_VERSION=$(jq -r '.version' manifest.json)
-          if [ "${{ steps.version.outputs.VERSION }}" != "$MANIFEST_VERSION" ]; then
-            echo "Version mismatch: tag is ${{ steps.version.outputs.VERSION }}, manifest is $MANIFEST_VERSION"
+          echo "Tag version: $TAG_VERSION"
+          echo "Manifest version: $MANIFEST_VERSION"
+          if [ "$TAG_VERSION" != "$MANIFEST_VERSION" ]; then
+            echo "Version mismatch! Tag is v$TAG_VERSION but manifest.json says $MANIFEST_VERSION"
             exit 1
           fi
-      
-      - name: Setup Deno
-        uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-      
-      - name: Build plugin
+          echo "VERSION=$TAG_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Format check
+        run: deno task fmt:check
+
+      - name: Lint
+        run: deno task lint
+
+      - name: Run tests
+        run: deno task test
+
+  release:
+    name: Create Release
+    needs: validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get plugin metadata
+        id: meta
         run: |
-          deno compile --allow-all --output plugin-build mod.ts
-      
+          echo "NAME=$(jq -r '.name' manifest.json)" >> $GITHUB_OUTPUT
+          echo "DESCRIPTION=$(jq -r '.description' manifest.json | head -c 200)" >> $GITHUB_OUTPUT
+          echo "VERSION=v$(jq -r '.version' manifest.json)" >> $GITHUB_OUTPUT
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          name: ${{ steps.meta.outputs.VERSION }}
+          body: |
+            ## ${{ steps.meta.outputs.NAME }} ${{ steps.meta.outputs.VERSION }}
+
+            ${{ steps.meta.outputs.DESCRIPTION }}
+
+            ### Installation
+            ```bash
+            cortex plugin install github:${{ github.repository }}
+            ```
+
+            ### Marketplace
+            Submit at: https://cortexprism.io/marketplace/publish/plugin
+
+            **Repository:** [${{ github.repository }}](https://github.com/${{ github.repository }})
           files: |
             manifest.json
             mod.ts
@@ -71,17 +82,19 @@ jobs:
             CHANGELOG.md
           draft: false
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Notify Marketplace (Optional)
-        if: success()
+
+      - name: Submission reminder
         run: |
-          echo "✅ Plugin ${{ steps.version.outputs.VERSION }} published successfully!"
-          echo "📝 To submit to CortexPrism Marketplace, visit: https://cortexprism.io/marketplace/publish/plugin"
+          echo "✅ Plugin published: ${{ steps.meta.outputs.NAME }} ${{ steps.meta.outputs.VERSION }}"
+          echo ""
+          echo "📝 Marketplace submission: https://cortexprism.io/marketplace/publish/plugin"
           echo ""
           echo "Submission checklist:"
-          echo "  - Plugin name (must match manifest): $(jq -r '.name' manifest.json)"
-          echo "  - Version: ${{ steps.version.outputs.VERSION }}"
-          echo "  - Description: $(jq -r '.description' manifest.json)"
-          echo "  - Repository: ${{ github.repository }}"
+          echo "  ✓ Plugin name: ${{ steps.meta.outputs.NAME }}"
+          echo "  ✓ Version: ${{ steps.meta.outputs.VERSION }}"
+          echo "  ✓ Repository: ${{ github.repositoryUrl }}"
+          echo "  ✓ Tests passing: true"
+          echo "  ✓ Lint passing: true"

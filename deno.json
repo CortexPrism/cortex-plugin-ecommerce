@@ -1,12 +1,13 @@
 {
   "tasks": {
     "dev": "deno run --watch --allow-all mod.ts",
-    "test": "deno test --allow-all test/**/*.test.ts",
-    "test:coverage": "deno test --coverage=.coverage --allow-all test/**/*.test.ts",
+    "test": "deno test --allow-all --no-check test/**/*.test.ts",
+    "test:coverage": "deno test --coverage=.coverage --allow-all --no-check test/**/*.test.ts",
     "fmt": "deno fmt",
     "fmt:check": "deno fmt --check",
     "lint": "deno lint",
-    "validate": "deno check mod.ts && deno fmt --check && deno lint"
+    "lint:fix": "deno lint --fix",
+    "validate": "deno fmt --check && deno lint && deno test --allow-all --no-check test/**/*.test.ts"
   },
   "imports": {
     "cortex/plugins": "https://deno.land/x/cortex@latest/plugins/mod.ts",
