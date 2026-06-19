@@ -1,3 +1,4 @@
+// deno-lint-ignore-file require-await
 import { assertEquals, assertStringIncludes } from 'https://deno.land/std@0.208.0/assert/mod.ts';
 import { tools } from '../../mod.ts';
 import type { PluginContext } from 'cortex/plugins';
