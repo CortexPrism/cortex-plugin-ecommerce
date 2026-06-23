@@ -1,7 +1,7 @@
 {
   "name": "cortex-plugin-ecommerce",
-  "version": "1.0.0",
-  "description": "E-Commerce Operations Manager — Shopify, WooCommerce, BigCommerce, and Magento integration for product management, inventory sync, order fulfillment, and sales analytics",
+  "version": "1.0.1",
+  "description": "E-Commerce Operations Manager \u2014 Shopify, WooCommerce, BigCommerce, and Magento integration for product management, inventory sync, order fulfillment, and sales analytics",
   "kind": "esm",
   "entryPoint": "mod.ts",
   "runtime": "deno",
@@ -9,7 +9,10 @@
   "license": "MIT",
   "repository": "https://github.com/CortexPrism/cortex-plugin-ecommerce",
   "homepage": "https://cortexprism.io/marketplace/plugins/ecommerce",
-  "capabilities": ["tools", "network:fetch"],
+  "capabilities": [
+    "tools",
+    "network:fetch"
+  ],
   "tools": [
     {
       "name": "ecom_list_products",
@@ -20,14 +23,24 @@
           "type": "string",
           "description": "E-commerce platform",
           "required": true,
-          "enum": ["shopify", "woocommerce", "bigcommerce", "magento"]
+          "enum": [
+            "shopify",
+            "woocommerce",
+            "bigcommerce",
+            "magento"
+          ]
         },
         {
           "name": "status",
           "type": "string",
           "description": "Filter by product status",
           "required": false,
-          "enum": ["active", "draft", "archived", "all"]
+          "enum": [
+            "active",
+            "draft",
+            "archived",
+            "all"
+          ]
         },
         {
           "name": "search",
@@ -58,17 +71,37 @@
           "type": "string",
           "description": "E-commerce platform",
           "required": true,
-          "enum": ["shopify", "woocommerce", "bigcommerce", "magento"]
+          "enum": [
+            "shopify",
+            "woocommerce",
+            "bigcommerce",
+            "magento"
+          ]
         },
-        { "name": "title", "type": "string", "description": "Product title", "required": true },
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Product title",
+          "required": true
+        },
         {
           "name": "description",
           "type": "string",
           "description": "Product description (HTML supported)",
           "required": true
         },
-        { "name": "price", "type": "number", "description": "Base price", "required": true },
-        { "name": "sku", "type": "string", "description": "Stock keeping unit", "required": false },
+        {
+          "name": "price",
+          "type": "number",
+          "description": "Base price",
+          "required": true
+        },
+        {
+          "name": "sku",
+          "type": "string",
+          "description": "Stock keeping unit",
+          "required": false
+        },
         {
           "name": "quantity",
           "type": "number",
@@ -98,7 +131,12 @@
           "type": "string",
           "description": "E-commerce platform",
           "required": true,
-          "enum": ["shopify", "woocommerce", "bigcommerce", "magento"]
+          "enum": [
+            "shopify",
+            "woocommerce",
+            "bigcommerce",
+            "magento"
+          ]
         },
         {
           "name": "product_id",
@@ -135,14 +173,27 @@
           "type": "string",
           "description": "E-commerce platform",
           "required": true,
-          "enum": ["shopify", "woocommerce", "bigcommerce", "magento"]
+          "enum": [
+            "shopify",
+            "woocommerce",
+            "bigcommerce",
+            "magento"
+          ]
         },
         {
           "name": "status",
           "type": "string",
           "description": "Order status",
           "required": false,
-          "enum": ["pending", "confirmed", "processing", "shipped", "delivered", "cancelled", "all"]
+          "enum": [
+            "pending",
+            "confirmed",
+            "processing",
+            "shipped",
+            "delivered",
+            "cancelled",
+            "all"
+          ]
         },
         {
           "name": "start_date",
@@ -173,9 +224,19 @@
           "type": "string",
           "description": "E-commerce platform",
           "required": true,
-          "enum": ["shopify", "woocommerce", "bigcommerce", "magento"]
+          "enum": [
+            "shopify",
+            "woocommerce",
+            "bigcommerce",
+            "magento"
+          ]
         },
-        { "name": "order_id", "type": "string", "description": "Order ID", "required": true },
+        {
+          "name": "order_id",
+          "type": "string",
+          "description": "Order ID",
+          "required": true
+        },
         {
           "name": "tracking_number",
           "type": "string",
@@ -205,7 +266,12 @@
           "type": "string",
           "description": "E-commerce platform",
           "required": true,
-          "enum": ["shopify", "woocommerce", "bigcommerce", "magento"]
+          "enum": [
+            "shopify",
+            "woocommerce",
+            "bigcommerce",
+            "magento"
+          ]
         },
         {
           "name": "period",
@@ -229,7 +295,9 @@
     }
   ],
   "dependencies": {},
-  "peerDependencies": { "cortex": ">=1.0.0" },
+  "peerDependencies": {
+    "cortex": ">=0.51.0"
+  },
   "ui": {
     "settings": [
       {
@@ -252,8 +320,18 @@
       {
         "section": "WooCommerce",
         "fields": [
-          { "key": "wooStoreUrl", "label": "Store URL", "type": "text", "defaultValue": "" },
-          { "key": "wooConsumerKey", "label": "Consumer Key", "type": "text", "defaultValue": "" },
+          {
+            "key": "wooStoreUrl",
+            "label": "Store URL",
+            "type": "text",
+            "defaultValue": ""
+          },
+          {
+            "key": "wooConsumerKey",
+            "label": "Consumer Key",
+            "type": "text",
+            "defaultValue": ""
+          },
           {
             "key": "wooConsumerSecret",
             "label": "Consumer Secret",
@@ -265,7 +343,9 @@
     ]
   },
   "aiDisclosure": {
-    "tools": ["Kilo (DeepSeek) — scaffold and implementation"],
+    "tools": [
+      "Kilo (DeepSeek) \u2014 scaffold and implementation"
+    ],
     "humanReview": true
   }
 }
